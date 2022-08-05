@@ -11,6 +11,7 @@ from .exceptions import ObjectIsNotAnEnumError
 class EnumValue:
     name: str
     value: Any
+    description: Optional[str]
     deprecation_reason: Optional[str] = None
 
 
@@ -38,14 +39,18 @@ class EnumDefinition(StrawberryType):
 @dataclasses.dataclass
 class EnumValueDefinition:
     value: Any
+    description: Optional[str]
     deprecation_reason: Optional[str] = None
 
 
 def enum_value(
-    value: Any, deprecation_reason: Optional[str] = None
+    value: Any,
+    description: Optional[str] = None,
+    deprecation_reason: Optional[str] = None,
 ) -> EnumValueDefinition:
     return EnumValueDefinition(
         value=value,
+        description=description,
         deprecation_reason=deprecation_reason,
     )
 
@@ -68,13 +73,20 @@ def _process_enum(
     for item in cls:  # type: ignore
         item_value = item.value
         item_name = item.name
-        deprecation_reason = None
+        item_description = None
+        item_deprecation_reason = None
 
         if isinstance(item_value, EnumValueDefinition):
-            deprecation_reason = item_value.deprecation_reason
+            item_description = item_value.description
+            item_deprecation_reason = item_value.deprecation_reason
             item_value = item_value.value
 
-        value = EnumValue(item_name, item_value, deprecation_reason=deprecation_reason)
+        value = EnumValue(
+            item_name,
+            item_value,
+            description=item_description,
+            deprecation_reason=item_deprecation_reason,
+        )
         values.append(value)
 
     cls._enum_definition = EnumDefinition(  # type: ignore

@@ -148,6 +148,7 @@ class GraphQLCoreConverter:
     def from_enum_value(self, enum_value: EnumValue) -> GraphQLEnumValue:
         return GraphQLEnumValue(
             enum_value.value,
+            description=enum_value.description,
             deprecation_reason=enum_value.deprecation_reason,
             extensions={
                 GraphQLCoreConverter.DEFINITION_BACKREF: enum_value,
