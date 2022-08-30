@@ -23,8 +23,10 @@ class EnumDefinition(StrawberryType):
     description: Optional[str]
 
     def __hash__(self) -> int:
-        # TODO: Is this enough for unique-ness?
         return hash(self.name)
+
+    def __eq__(self, other: Any) -> bool:
+        return hash(self) == hash(other)
 
     def copy_with(
         self, type_var_map: Mapping[TypeVar, Union[StrawberryType, type]]
@@ -41,6 +43,12 @@ class EnumValueDefinition:
     value: Any
     description: Optional[str]
     deprecation_reason: Optional[str] = None
+
+    def __hash__(self) -> int:
+        return hash(self.value)
+
+    def __eq__(self, other: Any) -> bool:
+        return hash(self) == hash(other)
 
 
 def enum_value(

@@ -42,7 +42,7 @@ from strawberry.annotation import StrawberryAnnotation
 from strawberry.arguments import StrawberryArgument, convert_arguments
 from strawberry.custom_scalar import ScalarDefinition, ScalarWrapper
 from strawberry.directive import StrawberryDirective
-from strawberry.enum import EnumDefinition, EnumValue
+from strawberry.enum import EnumDefinition, EnumValue, enum_value
 from strawberry.exceptions import (
     InvalidTypeInputForUnion,
     MissingTypesForGenericError,
